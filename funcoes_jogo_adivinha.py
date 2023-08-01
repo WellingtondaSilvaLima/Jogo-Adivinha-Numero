@@ -2,13 +2,8 @@ import random as rd
 import PySimpleGUI as sg
 
 # Verifica se os números digitados são inteiros
-def verificacao_intervalo():
-    inicio = input('Digite o início do intervalo: ')
-    fim = input('Digite o final do intervalo: ')
-    
+def verificacao_intervalo(inicio, fim):
     while not(inicio.isdigit()) or not(fim.isdigit()):
-        print('\n')
-        print('*'*50)
         print('Você precisa digitar dois números inteiros para prosseguir com o jogo!')
         inicio = input('Digite o início do intervalo: ')
         fim = input('Digite o final do intervalo: ')
@@ -19,8 +14,6 @@ def verificacao_intervalo():
 # Verifica se a aposta feita é válida e se está dentro do intervalo
 def verificacao_aposta(aposta, inicio, fim):
     while not(aposta.isdigit()) or int(aposta) < inicio or int(aposta) > fim:
-        print('\n')
-        print('*'*50)
         print('Você precisa apostar em números inteiros e que estejam dentro do intervalo!')
         aposta = input('Adivinhe o número: ')
 

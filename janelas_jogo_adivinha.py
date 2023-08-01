@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from funcoes_jogo_adivinha import *
 
 def janela_inicial():
     sg.theme('Reddit')
@@ -17,16 +18,20 @@ def janela_bem_vindo(nome):
             [sg.Input(key='inicio'), sg.Input(key='fim')],
             [sg.Button('Enviar')],
         ]
+
+    values = sg.read_all_windows()
+    verificacao_intervalo(values['inicio'], values['fim'])
+    
     return sg.Window('Bem-vindo! Boa sorte!', layout=layout, finalize=True)
 
-def janela_aposta(nome, chances):
+def janela_aposta(nome, inicio, fim):
     sg.theme('Reddit')
     layout = [
             [sg.Text(f'Boa sorte {nome}! Vamos iniciar o jogo?')],
             [sg.Text('Sua aposta é:')],
             [sg.Input(key='aposta')],
             [sg.Button('Enviar')],
-            [sg.Text(f'Você tem {chances} chances para acertar.')],
+            [sg.Text(f'Você tem 6 chances para acertar.')],
         ]
     return sg.Window('Aposta', layout=layout, finalize=True)
 
@@ -78,10 +83,24 @@ def janela_perdeu():
         ]
     return sg.Window('Que pena!', layout=layout, finalize=True)
 
-janela_1, janela_2 = janela_inicial(), None
+janela_1 = janela_inicial()
+janela_2 = None
+janela_3 = None
+janela_4 = None
+janela_5 = None
+janela_6 = None
+janela_7 = None
+janela_8 = None
+janela_9 = None
 
 while True:
     window, event, values = sg.read_all_windows()
 
     if window == janela_1 and event == sg.WINDOW_CLOSED:
         break
+    if window == janela_1 and event == 'Começar':
+        janela_1.hide()
+        janela_2 = janela_bem_vindo(values['nome'])
+    if window == janela_2 and event == 'Enviar':
+        janela_2.hide()
+        janela_3 = janela_aposta(values['nome'], values['inicio'], values['fim'])
