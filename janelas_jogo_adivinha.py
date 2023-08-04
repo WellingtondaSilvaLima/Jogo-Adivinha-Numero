@@ -1,106 +1,82 @@
-import PySimpleGUI as sg
+from PySimpleGUI import *
 from funcoes_jogo_adivinha import *
 
 def janela_inicial():
-    sg.theme('Reddit')
+    theme('DarkPurple')
     layout = [
-            [sg.Text('Digite seu nome:')],
-            [sg.Input(key='nome')],
-            [sg.Button('Começar')],
+            [Text('Digite seu nome:')],
+            [Input(key='-NOME-')],
+            [Button('Começar')],
         ]
-    return sg.Window('Jogo Adivinha o Número', layout=layout, finalize=True)
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 150)
+        )
 
 def janela_bem_vindo(nome):
-    sg.theme('Reddit')
+    theme('DarkPurple')
     layout = [
-            [sg.Text(f'Seja bem-vindo {nome}')],
-            [sg.Text('Escolha o início e o fim do intervalo:')],
-            [sg.Input(key='inicio'), sg.Input(key='fim')],
-            [sg.Button('Enviar')],
+            [Text(f'Seja bem-vindo {nome}')],
+            [Text('Escolha o nível do jogo')],
+            [Radio('1 a 10 - Fácil', 'dificuldade', key='-FACIL-'),
+             Radio('1 a 50 - Normal', 'dificuldade', key='-NORMAL-'),
+             Radio('1 a 100 - Difídil', 'dificuldade', key='-DIFICIL-')],
+            [Button('Enviar')],
         ]
-
-    values = sg.read_all_windows()
-    verificacao_intervalo(values['inicio'], values['fim'])
     
-    return sg.Window('Bem-vindo! Boa sorte!', layout=layout, finalize=True)
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 150)
+        )
 
-def janela_aposta(nome, inicio, fim):
-    sg.theme('Reddit')
+def janela_aposta():
+    theme('DarkPurple')
     layout = [
-            [sg.Text(f'Boa sorte {nome}! Vamos iniciar o jogo?')],
-            [sg.Text('Sua aposta é:')],
-            [sg.Input(key='aposta')],
-            [sg.Button('Enviar')],
-            [sg.Text(f'Você tem 6 chances para acertar.')],
+            [Text('Vamos iniciar o jogo?')],
+            [Text('Sua aposta é:')],
+            [Input(key='-APOSTA-')],
+            [Button('Apostar')],
+            [Text(f'Você tem 6 chances para acertar.')],
         ]
-    return sg.Window('Aposta', layout=layout, finalize=True)
-
-def janela_dica_mais():
-    sg.theme('Reddit')
-    layout = [
-            [sg.Text('Um pouco mais!')],
-            [sg.Button('Próxima aposta'), sg.Button('Cancelar')],
-        ]
-    return sg.Window('Dica: Mais', layout=layout, finalize=True)
-
-def janela_dica_menos():
-    sg.theme('Reddit')
-    layout = [
-            [sg.Text('Um pouco menos!')],
-            [sg.Button('Próxima aposta'), sg.Button('Cancelar')],
-        ]
-    return sg.Window('Dica: Menos', layout=layout, finalize=True)
+    return Window('Aposta', layout=layout, finalize=True)
 
 def janela_erro_aposta():
-    sg.theme('Reddit')
+    theme('DarkPurple')
     layout = [
-            [sg.Text('Você precisa apostar em números inteiros e que estejam dentro do intervalo!')],
-            [sg.Button('Próxima aposta'), sg.Button('Cancelar')],
+            [Text('Você precisa apostar em números inteiros e que estejam dentro do intervalo!')],
+            [Button('Próxima aposta'), Button('Cancelar')],
         ]
-    return sg.Window('Erro - Aposta', layout=layout, finalize=True)
+    return Window('Erro - Aposta', layout=layout, finalize=True)
 
 def janela_erro_intervalo():
-    sg.theme('Reddit')
+    sg.theme('DarkPurple')
     layout = [
             [sg.Text('Você precisa digitar dois números inteiros para prosseguir com o jogo!')],
             [sg.Button('Próxima aposta'), sg.Button('Cancelar')],
         ]
     return sg.Window('Erro - Intervalo', layout=layout, finalize=True)
 
-def janela_venceu():
-    sg.theme('Reddit')
-    layout = [
-            [sg.Text('Parabéns! Você venceu')],
-            [sg.Button('Jogar novamente'), sg.Button('Cancelar')],
-        ]
-    return sg.Window('Parabéns', layout=layout, finalize=True)
-
-def janela_perdeu():
-    sg.theme('Reddit')
-    layout = [
-            [sg.Text('Que pena! Você perdeu')],
-            [sg.Button('Jogar novamente'), sg.Button('Cancelar')],
-        ]
-    return sg.Window('Que pena!', layout=layout, finalize=True)
-
 janela_1 = janela_inicial()
-janela_2 = None
-janela_3 = None
-janela_4 = None
-janela_5 = None
-janela_6 = None
-janela_7 = None
-janela_8 = None
-janela_9 = None
 
 while True:
-    window, event, values = sg.read_all_windows()
+    window, event, values = read_all_windows()
 
-    if window == janela_1 and event == sg.WINDOW_CLOSED:
-        break
-    if window == janela_1 and event == 'Começar':
-        janela_1.hide()
-        janela_2 = janela_bem_vindo(values['nome'])
-    if window == janela_2 and event == 'Enviar':
-        janela_2.hide()
-        janela_3 = janela_aposta(values['nome'], values['inicio'], values['fim'])
+    match event:
+        case None:
+            break
+        case 'Começar':
+            janela_2 = janela_bem_vindo(values['-NOME-'])
+            janela_1.hide()
+        case 'Enviar':
+            Janela_3 = janela_aposta()
+            janela_2.hide()
+        case 'Apostar':
+            popup('Um pouco mais!')
+    
+
