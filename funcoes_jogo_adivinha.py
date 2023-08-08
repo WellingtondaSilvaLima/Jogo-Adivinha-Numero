@@ -1,6 +1,18 @@
 import random as rd
-import PySimpleGUI as sg
+from PySimpleGUI import *
 
+
+# Verifica o intervalo
+def verificacao_intervalo(escolha):
+    match escolha:
+        case '-FACIL-':
+            intervalo = [1, 10]
+        case '-NORMAL-':
+            intervalo = [1, 50]
+        case '-DIFICIL-':
+            intervalo = [1, 100]
+
+    return intervalo
 
 # Verifica se a aposta feita é válida e se está dentro do intervalo
 def verificacao_aposta(aposta, inicio, fim):
