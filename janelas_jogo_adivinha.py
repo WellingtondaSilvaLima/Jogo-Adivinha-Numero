@@ -2,6 +2,23 @@ from PySimpleGUI import *
 from funcoes_jogo_adivinha import *
 import random as rd
 
+'''
+def janela_apresentacao():    
+    theme('DarkPurple')
+    layout = [
+            [Image()],
+            [Button('Ranking'), Button('Jogar'), Button('Parar')],
+        ]
+    
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 150)
+        )
+'''
+
 def janela_inicial():    
     theme('DarkPurple')
     layout = [
@@ -131,14 +148,15 @@ while True:
 
             
             if int(aposta) == numero_escolhido:
-                janela_4 = janela_vencedor(nome)
                 janela_3.close()
+                janela_4 = janela_vencedor(nome)
             elif int(aposta) < numero_escolhido:
                 popup('Um pouco mais!')
                 chances -= 1
                 
                 if chances == 0:
                     janela_5 = janela_perdedor(nome)
+                    janela_3.hide()
                 
                 window['-CHANCE-'].update(f'Você terá {chances} chances para acertar.')
                 window['-APOSTA-'].update('')
@@ -149,20 +167,23 @@ while True:
                 
                 if chances == 0:
                     janela_5 = janela_perdedor(nome)
+                    janela_3.hide()
                 
                 window['-CHANCE-'].update(f'Você terá {chances} chances para acertar.')
                 window['-APOSTA-'].update('')
                 continue
         case 'Reiniciar':
+            chances = 6
+            if not(janela_4 == None):
+                janela_4.close()
+            if not(janela_5 == None):
+                janela_5.close()
             janela_2 = janela_bem_vindo(nome)
         case 'Parar':
             break
         
         case None:
             break
-
-
-print(chaves)
     
 
 
