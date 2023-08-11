@@ -27,7 +27,6 @@ def janela_bem_vindo(nome):
              Radio('1 a 50 - Normal', 'dificuldade', key='-NORMAL-'),
              Radio('1 a 100 - Difídil', 'dificuldade', key='-DIFICIL-')],
             [Button('Enviar')],
-            [Text('Você terá 6 chances para acertar.')],
         ]
     
     return Window(
@@ -38,13 +37,44 @@ def janela_bem_vindo(nome):
         size=(400, 150)
         )
 
-def janela_aposta():
+def janela_aposta(chances):
     theme('DarkPurple')
     layout = [
         [Text('Vamos iniciar o jogo?')],
         [Text('Sua aposta é:')],
         [Input(key='-APOSTA-', size=(20))],
         [Button('Apostar')],
+        [Text(f'Você terá 6 chances para acertar.', key='-CHANCE-')],
+        ]
+    
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 150)
+        )
+
+def janela_vencedor(nome):
+    theme('DarkPurple')
+    layout = [
+        [Text(f'Parabéns {nome}, você venceu!')],
+        [Button('Reiniciar'), Button('Parar')],
+        ]
+    
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 150)
+        )
+
+def janela_perdedor(nome):
+    theme('DarkPurple')
+    layout = [
+        [Text(f'Que pena {nome}, você perdeu!')],
+        [Button('Reiniciar'), Button('Parar')],
         ]
     
     return Window(
@@ -56,18 +86,24 @@ def janela_aposta():
         )
 
 
+chances = 6
 
 janela_1 = janela_inicial()
+janela_2 = None
+janela_3 = None
+janela_4 = None
+janela_5 = None
 
 while True:
-    window, event, values = read_all_windows()
+    window, event, values = read_all_windows()    
 
     match event:
         case 'Começar':
             janela_2 = janela_bem_vindo(values['-NOME-'])
-            janela_1.hide()
+            nome = values['-NOME-']
+            janela_1.close()
         case 'Enviar':
-            janela_3 = janela_aposta()
+            janela_3 = janela_aposta(chances)
 
             if values['-FACIL-']:
                 intervalo = verificacao_intervalo('-FACIL-')
@@ -76,7 +112,7 @@ while True:
             elif values['-DIFICIL-']:
                 intervalo = verificacao_intervalo('-DIFICIL-')
             else:
-                janela_3.hide()
+                janela_3.close()
                 popup('Erro! Escolha uma opção')
                 continue
 
@@ -84,7 +120,7 @@ while True:
             fim = intervalo[1]
             numero_escolhido = rd.randint(inicio, fim)
             
-            janela_2.hide()
+            janela_2.close()
         case 'Apostar':
             aposta = values['-APOSTA-']
             
@@ -95,21 +131,39 @@ while True:
 
             
             if int(aposta) == numero_escolhido:
-                popup('Parabéns! Você venceu!')
-                break
+                janela_4 = janela_vencedor(nome)
+                janela_3.close()
             elif int(aposta) < numero_escolhido:
                 popup('Um pouco mais!')
+                chances -= 1
+                
+                if chances == 0:
+                    janela_5 = janela_perdedor(nome)
+                
+                window['-CHANCE-'].update(f'Você terá {chances} chances para acertar.')
                 window['-APOSTA-'].update('')
                 continue
             elif int(aposta) > numero_escolhido:
                 popup('Um pouco menos!')
+                chances -= 1
+                
+                if chances == 0:
+                    janela_5 = janela_perdedor(nome)
+                
+                window['-CHANCE-'].update(f'Você terá {chances} chances para acertar.')
                 window['-APOSTA-'].update('')
                 continue
-            
+        case 'Reiniciar':
+            janela_2 = janela_bem_vindo(nome)
+        case 'Parar':
+            break
+        
         case None:
             break
 
 
+print(chaves)
+    
 
 
 
