@@ -2,11 +2,11 @@ from PySimpleGUI import *
 from funcoes_jogo_adivinha import *
 import random as rd
 
-'''
+# Janela de início do jogo
 def janela_apresentacao():    
     theme('DarkPurple')
     layout = [
-            [Image()],
+            [Image(filename='logo.png')],
             [Button('Ranking'), Button('Jogar'), Button('Parar')],
         ]
     
@@ -15,10 +15,27 @@ def janela_apresentacao():
         layout=layout,
         finalize=True,
         element_justification='c',
-        size=(400, 150)
+        size=(400, 300)
         )
-'''
 
+# Janela que mostra os 10 melhores jogadores
+def janela_ranking():
+    theme('DarkPurple')
+    layout = [
+            [Text('Classificação de Jogadores')],
+            [Table([['oi', 'oi', 'oi']], num_rows=10)],
+            [Button('Voltar'), Button('Jogar'), Button('Parar')],
+        ]
+    
+    return Window(
+        'Jogo Adivinha o Número',
+        layout=layout,
+        finalize=True,
+        element_justification='c',
+        size=(400, 500)
+        )
+
+# Janela que pede o nome do participante
 def janela_inicial():    
     theme('DarkPurple')
     layout = [
@@ -28,13 +45,14 @@ def janela_inicial():
         ]
     
     return Window(
-        'Jogo Adivinha o Número',
+        'Jogo Adivinha o Número', # nome da janela
         layout=layout,
-        finalize=True,
-        element_justification='c',
-        size=(400, 150)
+        finalize=True, # possibilita abrir várias janelas
+        element_justification='c', # centraliza os elementos
+        size=(400, 150) # define um tamanho para a janela
         )
 
+# janela que pede para o jogador escolher o nível de dificuldade
 def janela_bem_vindo(nome):
     theme('DarkPurple')
     layout = [
@@ -54,6 +72,7 @@ def janela_bem_vindo(nome):
         size=(400, 150)
         )
 
+# Janela que solicita o número que o jogador quer apostar
 def janela_aposta(chances):
     theme('DarkPurple')
     layout = [
@@ -72,6 +91,7 @@ def janela_aposta(chances):
         size=(400, 150)
         )
 
+# Janela que aparece quando o jogador vence
 def janela_vencedor(nome):
     theme('DarkPurple')
     layout = [
@@ -84,9 +104,10 @@ def janela_vencedor(nome):
         layout=layout,
         finalize=True,
         element_justification='c',
-        size=(400, 150)
+        size=(250, 80)
         )
 
+# Janela que aparece quando o jogador perde
 def janela_perdedor(nome):
     theme('DarkPurple')
     layout = [
@@ -99,13 +120,15 @@ def janela_perdedor(nome):
         layout=layout,
         finalize=True,
         element_justification='c',
-        size=(400, 150)
+        size=(250, 80)
         )
 
-
+# Define a quantidade de chances que o jogador tem
 chances = 6
 
-janela_1 = janela_inicial()
+janela_0 = janela_apresentacao()
+janela_r = None
+janela_1 = None
 janela_2 = None
 janela_3 = None
 janela_4 = None
@@ -115,9 +138,24 @@ while True:
     window, event, values = read_all_windows()    
 
     match event:
+        case 'Ranking':
+            janela_r = janela_ranking()
+            janela_0.hide()
+        case 'Voltar':
+            janela_0 = janela_apresentacao()
+            janela_r.hide()
+        case 'Jogar':
+            janela_1 = janela_inicial()
+            janela_0.hide()
         case 'Começar':
             janela_2 = janela_bem_vindo(values['-NOME-'])
+
+            # Salva o nome do jogador
             nome = values['-NOME-']
+
+            # Define o início da pontuação do jogador enquanto ele não clica em fechar
+            pontos = 0
+            
             janela_1.close()
         case 'Enviar':
             janela_3 = janela_aposta(chances)
@@ -152,6 +190,10 @@ while True:
                 janela_4 = janela_vencedor(nome)
             elif int(aposta) < numero_escolhido:
                 popup('Um pouco mais!')
+                
+                pontos_ranking = ranking(pontos, chances)
+                print(pontos)
+                
                 chances -= 1
                 
                 if chances == 0:
@@ -160,9 +202,14 @@ while True:
                 
                 window['-CHANCE-'].update(f'Você terá {chances} chances para acertar.')
                 window['-APOSTA-'].update('')
+                
                 continue
             elif int(aposta) > numero_escolhido:
                 popup('Um pouco menos!')
+                
+                pontos_ranking = ranking(pontos, chances)
+                print(pontos)
+                
                 chances -= 1
                 
                 if chances == 0:
