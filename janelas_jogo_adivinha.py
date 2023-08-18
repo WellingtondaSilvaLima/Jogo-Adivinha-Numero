@@ -19,11 +19,18 @@ def janela_apresentacao():
         )
 
 # Janela que mostra os 10 melhores jogadores
-def janela_ranking():
+def janela_ranking(dados, titulos):
     theme('DarkPurple')
     layout = [
             [Text('Classificação de Jogadores')],
-            [Table([['oi', 'oi', 'oi']], num_rows=10)],
+            [Table(
+                values=dados,
+                headings=titulos,
+                num_rows=10,
+                hide_vertical_scroll=True,
+                justification='center',
+                expand_x=True,
+                auto_size_columns =False)],
             [Button('Voltar'), Button('Jogar'), Button('Parar')],
         ]
     
@@ -126,6 +133,9 @@ def janela_perdedor(nome):
 # Define a quantidade de chances que o jogador tem
 chances = 6
 
+# Define o início da pontuação do jogador enquanto ele não clica em fechar
+pontos = 0
+
 janela_0 = janela_apresentacao()
 janela_r = None
 janela_1 = None
@@ -135,12 +145,9 @@ janela_4 = None
 janela_5 = None
 
 while True:
-    window, event, values = read_all_windows()    
+    window, event, values = read_all_windows()
 
     match event:
-        case 'Ranking':
-            janela_r = janela_ranking()
-            janela_0.hide()
         case 'Voltar':
             janela_0 = janela_apresentacao()
             janela_r.hide()
@@ -152,9 +159,6 @@ while True:
 
             # Salva o nome do jogador
             nome = values['-NOME-']
-
-            # Define o início da pontuação do jogador enquanto ele não clica em fechar
-            pontos = 0
             
             janela_1.close()
         case 'Enviar':
@@ -191,12 +195,9 @@ while True:
             elif int(aposta) < numero_escolhido:
                 popup('Um pouco mais!')
                 
-                pontos_ranking = ranking(pontos, chances)
-                print(pontos)
-                
                 chances -= 1
                 
-                if chances == 0:
+                if chances == 0:                    
                     janela_5 = janela_perdedor(nome)
                     janela_3.hide()
                 
@@ -206,9 +207,6 @@ while True:
                 continue
             elif int(aposta) > numero_escolhido:
                 popup('Um pouco menos!')
-                
-                pontos_ranking = ranking(pontos, chances)
-                print(pontos)
                 
                 chances -= 1
                 
@@ -220,15 +218,29 @@ while True:
                 window['-APOSTA-'].update('')
                 continue
         case 'Reiniciar':
+            pontos_ranking = pontuacao(pontos, chances)
+            print(pontos_ranking)
+            
             chances = 6
+            
             if not(janela_4 == None):
                 janela_4.close()
             if not(janela_5 == None):
                 janela_5.close()
             janela_2 = janela_bem_vindo(nome)
         case 'Parar':
+            pontos_ranking = pontuacao(pontos, chances)
+            
             break
-        
+        case 'Ranking':
+            titulos = ['Nº', 'NOME', 'PONTUAÇÃO']
+            dados = [
+                [1, 'Wellington', 140],
+                [2, 'Antonio', 100]
+                ]
+            
+            janela_r = janela_ranking(dados, titulos)
+            janela_0.hide()
         case None:
             break
     
@@ -246,11 +258,6 @@ while True:
 
 
 
-
-
-
-
-
            
     
-
+# SDG
