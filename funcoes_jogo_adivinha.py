@@ -2,7 +2,9 @@ import random as rd
 from PySimpleGUI import *
 
 # Define a pontuação por rodada
-def pontuacao(pontos, chances):
+def pontuacao(chances):
+    pontos = 0
+    
     match chances:
         case 6:
             pontos += 50

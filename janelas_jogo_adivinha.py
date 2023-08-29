@@ -1,6 +1,7 @@
 from PySimpleGUI import *
 from funcoes_jogo_adivinha import *
 import random as rd
+from database_ranking import *
 
 # Janela de início do jogo
 def janela_apresentacao():    
@@ -133,8 +134,8 @@ def janela_perdedor(nome):
 # Define a quantidade de chances que o jogador tem
 chances = 6
 
-# Define o início da pontuação do jogador enquanto ele não clica em fechar
-pontos = 0
+pontos_agora = []
+pontos_somados = 0
 
 janela_0 = janela_apresentacao()
 janela_r = None
@@ -218,8 +219,9 @@ while True:
                 window['-APOSTA-'].update('')
                 continue
         case 'Reiniciar':
-            pontos_ranking = pontuacao(pontos, chances)
-            print(pontos_ranking)
+            
+            pontos_ranking = pontuacao(chances)
+            pontos_agora.append(pontos_ranking)
             
             chances = 6
             
@@ -229,17 +231,25 @@ while True:
                 janela_5.close()
             janela_2 = janela_bem_vindo(nome)
         case 'Parar':
-            pontos_ranking = pontuacao(pontos, chances)
+
+            pontos_ranking = pontuacao(chances)
+            pontos_agora.append(pontos_ranking)
+
+            print(pontos_agora)
+
+            for pontos in range(len(pontos_agora)):
+                pontos_somados += pontos_agora[pontos]
+
+            print(pontos_somados)
+
+            dados = {'nome': nome, 'pontos': pontos_ranking}
             
             break
         case 'Ranking':
             titulos = ['Nº', 'NOME', 'PONTUAÇÃO']
-            dados = [
-                [1, 'Wellington', 140],
-                [2, 'Antonio', 100]
-                ]
+            dados_ordenados = None
             
-            janela_r = janela_ranking(dados, titulos)
+            janela_r = janela_ranking(dados_ordenados, titulos)
             janela_0.hide()
         case None:
             break
