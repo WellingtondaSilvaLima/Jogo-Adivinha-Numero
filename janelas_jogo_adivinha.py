@@ -137,6 +137,7 @@ chances = 6
 pontos_agora = []
 pontos_somados = 0
 
+
 janela_0 = janela_apresentacao()
 janela_r = None
 janela_1 = None
@@ -242,14 +243,18 @@ while True:
 
             print(pontos_somados)
 
-            dados = {'nome': nome, 'pontos': pontos_ranking}
+            dados = {'nome': nome, 'pontos': pontos_somados}
+
+            nova_posicao(dados)
             
             break
         case 'Ranking':
             titulos = ['Nº', 'NOME', 'PONTUAÇÃO']
-            dados_ordenados = None
+            dados = ler_ranking()
+
+            tabela_ranking = cria_tabela_ranking(dados)
             
-            janela_r = janela_ranking(dados_ordenados, titulos)
+            janela_r = janela_ranking(tabela_ranking, titulos)
             janela_0.hide()
         case None:
             break

@@ -1,5 +1,5 @@
-import random as rd
-from PySimpleGUI import *
+from database_ranking import *
+
 
 # Define a pontuação por rodada
 def pontuacao(chances):
@@ -43,7 +43,16 @@ def verificacao_intervalo(escolha):
 
     return intervalo
 
+def cria_tabela_ranking(dados):
+    tabela_ranking = []
+    posicao = 1
 
+    for id_posicao in dados:
+        tabela_ranking.append([posicao, dados[id_posicao]['nome'], dados[id_posicao]['pontos']])
+        posicao += 1
+
+    return tabela_ranking
+    
 
 
 
