@@ -50,10 +50,13 @@ def cria_tabela_ranking(dados):
     for id_posicao in dados:
         tabela_ranking.append([posicao, dados[id_posicao]['nome'], dados[id_posicao]['pontos']])
         posicao += 1
+        print(*tabela_ranking)
 
     return tabela_ranking
     
 
+def ordena_ranking():
+    ...
 
 
 
