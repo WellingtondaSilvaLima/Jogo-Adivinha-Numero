@@ -236,12 +236,8 @@ while True:
             pontos_ranking = pontuacao(chances)
             pontos_agora.append(pontos_ranking)
 
-            print(pontos_agora)
-
             for pontos in range(len(pontos_agora)):
                 pontos_somados += pontos_agora[pontos]
-
-            print(pontos_somados)
 
             dados = {'nome': nome, 'pontos': pontos_somados}
 
