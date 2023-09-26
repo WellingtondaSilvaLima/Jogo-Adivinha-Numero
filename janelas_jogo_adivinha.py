@@ -248,7 +248,7 @@ while True:
             titulos = ['Nº', 'NOME', 'PONTUAÇÃO']
             dados = ler_ranking()
 
-            tabela_ranking = cria_tabela_ranking(dados)
+            tabela_ranking = ordena_ranking(dados)
             
             janela_r = janela_ranking(tabela_ranking, titulos)
             janela_0.hide()
