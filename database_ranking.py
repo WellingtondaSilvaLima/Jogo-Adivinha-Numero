@@ -13,9 +13,6 @@ def nova_posicao(dados):
 
 def ler_ranking():
     global link
-    dados = {}
-    jogador = []
-    pontuacao = []
 
     requisicao = requests.get(f'{link}/Ranking/.json')
 

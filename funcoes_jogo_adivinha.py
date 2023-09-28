@@ -2,27 +2,57 @@ from database_ranking import *
 
 
 # Define a pontuação por rodada
-def pontuacao(chances):
+def pontuacao(chances, nivel):
     pontos = 0
     
     match chances:
         case 6:
-            pontos += 50
+            if nivel == 'fácil':
+                pontos += 50
+            elif nivel == 'normal':
+                pontos += 80
+            else:
+                pontos += 100
             return pontos
         case 5:
-            pontos += 40
+            if nivel == 'fácil':
+                pontos += 40
+            elif nivel == 'normal':
+                pontos += 70
+            else:
+                pontos += 90
             return pontos
         case 4:
-            pontos += 40
+            if nivel == 'fácil':
+                pontos += 40
+            elif nivel == 'normal':
+                pontos += 60
+            else:
+                pontos += 80
             return pontos
         case 3:
-            pontos += 20
+            if nivel == 'fácil':
+                pontos += 20
+            elif nivel == 'normal':
+                pontos += 50
+            else:
+                pontos += 70
             return pontos
         case 2:
-            pontos += 20
+            if nivel == 'fácil':
+                pontos += 20
+            elif nivel == 'normal':
+                pontos += 40
+            else:
+                pontos += 60
             return pontos
         case 1:
-            pontos += 10
+            if nivel == 'fácil':
+                pontos += 10
+            elif nivel == 'normal':
+                pontos += 30
+            else:
+                pontos += 50
             return pontos
         case 0:
             pontos += 0
